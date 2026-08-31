@@ -217,7 +217,7 @@
     addMessage('user', trimmed);
     CrystalAudio.send();
     if (window.CrystalVisual) {
-      CrystalVisual.strike(0.6);
+      CrystalVisual.resonate(trimmed, 1.25);
       CrystalVisual.thinking(true);
     }
     setStatus('Communing…');
@@ -234,14 +234,17 @@
       CrystalAudio.receive();
       if (window.CrystalVisual) {
         CrystalVisual.thinking(false);
-        CrystalVisual.strike(1.0);
+        CrystalVisual.resonate(content.slice(0, 120), 1.05);
       }
       setStatus('Attuned…');
     } catch (err) {
       thinkingEl.remove();
       addMessage('assistant', `The crystal flickered.\n\n*${err.message || err}*`);
       CrystalAudio.error();
-      if (window.CrystalVisual) CrystalVisual.thinking(false);
+      if (window.CrystalVisual) {
+        CrystalVisual.thinking(false);
+        CrystalVisual.resonate('error-flare', 0.7);
+      }
       setStatus('Unstable…');
       // remove failed user turn? keep it for context retry
     } finally {
@@ -276,7 +279,7 @@
       sfxVol: settings.sfxVolume ?? 0.55
     });
 
-    if (window.CrystalVisual) CrystalVisual.strike(1.2);
+    if (window.CrystalVisual) CrystalVisual.resonate('awaken', 1.4);
 
     els.boot.classList.add('fade-out');
     setTimeout(() => {
@@ -340,7 +343,7 @@
     CrystalAudio.setSfxVolume(settings.sfxVolume);
     updateHint();
     CrystalAudio.receive();
-    if (window.CrystalVisual) CrystalVisual.strike(0.5);
+    if (window.CrystalVisual) CrystalVisual.resonate('settings-sealed', 0.65);
     closeDrawer('settings');
     setStatus('Settings sealed…');
   });

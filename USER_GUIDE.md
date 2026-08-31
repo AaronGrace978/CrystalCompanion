@@ -75,7 +75,8 @@ The crystal’s glow **pulses with the music** — bass and harmonics feed the r
 The centerpiece is a **raymarched** crystal: a real-time ray-traced volume of facets, inner lattice, and orbiting shards.
 
 - It breathes and rotates on its own.
-- It brightens when you speak or when a reply arrives.
+- It **glows and shifts color** each time you speak — walking the spectrum and inventing wild new hues.
+- It brightens again when a reply arrives.
 - It listens to the song and answers with light.
 
 No images — pure shader magic.
