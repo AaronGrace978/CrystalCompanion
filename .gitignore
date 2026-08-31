@@ -1,0 +1,14 @@
+node_modules/
+dist/
+release/
+*.log
+*.exe
+*.dmg
+*.AppImage
+*.deb
+*.blockmap
+.DS_Store
+Thumbs.db
+.env
+.env.*
+Afterglow of the Dying Star (Final Fantasy Remix).wav

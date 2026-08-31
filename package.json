@@ -1,0 +1,110 @@
+{
+  "name": "crystal-companion",
+  "version": "1.0.0",
+  "description": "A digital crystal guide — luminous AI companion for healing, protection, and manifestation",
+  "main": "electron/main.js",
+  "author": "CrystalCompanion",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --publish never",
+    "dist:win": "electron-builder --win --publish never",
+    "dist:mac": "electron-builder --mac --publish never",
+    "dist:linux": "electron-builder --linux --publish never",
+    "dist:all": "electron-builder -mwl --publish never",
+    "release": "electron-builder --publish always"
+  },
+  "build": {
+    "appId": "com.crystalcompanion.app",
+    "productName": "Crystal Companion",
+    "copyright": "Copyright © Crystal Companion",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "src/**/*",
+      "assets/**/*",
+      "USER_GUIDE.md",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "assets/awakening.wav",
+        "to": "awakening.wav"
+      }
+    ],
+    "asar": true,
+    "icon": "build/icon.png",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "${productName}-${version}-win-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Crystal Companion"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "category": "public.app-category.lifestyle",
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        }
+      ],
+      "category": "Utility",
+      "artifactName": "${productName}-${version}-linux-${arch}.${ext}",
+      "desktop": {
+        "Name": "Crystal Companion",
+        "Comment": "A luminous digital crystal guide",
+        "Categories": "Utility;Education;"
+      }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "AaronGrace978",
+        "repo": "CrystalCompanion",
+        "releaseType": "release"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}
