@@ -1,9 +1,9 @@
 {
   "name": "crystal-companion",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A digital crystal guide — luminous AI companion for healing, protection, and manifestation",
   "main": "electron/main.js",
-  "author": "CrystalCompanion",
+  "author": "Aaron Grace <AaronGrace978@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
@@ -49,15 +49,18 @@
           "target": "portable",
           "arch": ["x64"]
         }
-      ],
-      "artifactName": "${productName}-${version}-win-${arch}.${ext}"
+      ]
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Crystal Companion"
+      "shortcutName": "Crystal Companion",
+      "artifactName": "${productName}-${version}-win-${arch}-setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-win-${arch}-portable.${ext}"
     },
     "mac": {
       "target": [
@@ -87,11 +90,14 @@
         }
       ],
       "category": "Utility",
+      "maintainer": "Aaron Grace <AaronGrace978@users.noreply.github.com>",
       "artifactName": "${productName}-${version}-linux-${arch}.${ext}",
       "desktop": {
-        "Name": "Crystal Companion",
-        "Comment": "A luminous digital crystal guide",
-        "Categories": "Utility;Education;"
+        "entry": {
+          "Name": "Crystal Companion",
+          "Comment": "A luminous digital crystal guide",
+          "Categories": "Utility;Education;"
+        }
       }
     },
     "publish": [
