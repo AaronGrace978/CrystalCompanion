@@ -1,6 +1,6 @@
 {
   "name": "crystal-companion",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A digital crystal guide — luminous AI companion for healing, protection, and manifestation",
   "main": "electron/main.js",
   "author": "Aaron Grace <AaronGrace978@users.noreply.github.com>",

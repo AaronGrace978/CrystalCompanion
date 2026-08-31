@@ -25,6 +25,7 @@
     openrouterKey: $('#set-openrouter-key'),
     openaiKey: $('#set-openai-key'),
     anthropicKey: $('#set-anthropic-key'),
+    ollamaKey: $('#set-ollama-key'),
     ollamaUrl: $('#set-ollama-url'),
     model: $('#set-model'),
     refreshModels: $('#btn-refresh-models'),
@@ -86,6 +87,7 @@
     els.openrouterKey.value = settings.openrouterKey || '';
     els.openaiKey.value = settings.openaiKey || '';
     els.anthropicKey.value = settings.anthropicKey || '';
+    els.ollamaKey.value = settings.ollamaKey || '';
     els.ollamaUrl.value = settings.ollamaUrl || 'http://127.0.0.1:11434';
     els.temperature.value = settings.temperature ?? 0.85;
     els.tempVal.textContent = Number(els.temperature.value).toFixed(2);
@@ -103,6 +105,7 @@
       openrouterKey: els.openrouterKey.value.trim(),
       openaiKey: els.openaiKey.value.trim(),
       anthropicKey: els.anthropicKey.value.trim(),
+      ollamaKey: els.ollamaKey.value.trim(),
       ollamaUrl: els.ollamaUrl.value.trim() || 'http://127.0.0.1:11434',
       model: els.model.value,
       temperature: Number(els.temperature.value),
@@ -139,7 +142,9 @@
         ? `Error: ${err.slice(0, 60)}`
         : draft.provider === 'ollama'
           ? 'No local models — is Ollama running?'
-          : 'No models — check API key';
+          : draft.provider === 'ollama-cloud'
+            ? 'No cloud models — check network'
+            : 'No models — check API key';
       els.model.appendChild(opt);
       return;
     }
@@ -190,7 +195,7 @@
     welcomeShown = true;
     addMessage(
       'assistant',
-      'I am awake within the lattice.\n\nAsk me for stones of **healing**, **protection**, **manifestation**, grounding, love, or clarity — and I will name what resonates, and how to work with it.\n\nOpen **Attunement** (settings) to choose your oracle: OpenRouter, Ollama, OpenAI, or Anthropic.'
+      'I am awake within the lattice.\n\nAsk me for stones of **healing**, **protection**, **manifestation**, grounding, love, or clarity — and I will name what resonates, and how to work with it.\n\nOpen **Attunement** (settings) to choose your oracle: OpenRouter, Ollama Cloud, Ollama Local, OpenAI, or Anthropic.'
     );
   }
 

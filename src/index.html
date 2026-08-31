@@ -66,6 +66,7 @@
             <span>Provider</span>
             <select id="set-provider">
               <option value="openrouter">OpenRouter Cloud</option>
+              <option value="ollama-cloud">Ollama Cloud</option>
               <option value="ollama">Ollama (Local)</option>
               <option value="openai">OpenAI</option>
               <option value="anthropic">Anthropic</option>
@@ -75,6 +76,10 @@
           <label class="field" data-show="openrouter">
             <span>OpenRouter API Key</span>
             <input type="password" id="set-openrouter-key" placeholder="sk-or-…" autocomplete="off" />
+          </label>
+          <label class="field" data-show="ollama-cloud">
+            <span>Ollama Cloud API Key</span>
+            <input type="password" id="set-ollama-key" placeholder="From ollama.com/settings/keys" autocomplete="off" />
           </label>
           <label class="field" data-show="openai">
             <span>OpenAI API Key</span>

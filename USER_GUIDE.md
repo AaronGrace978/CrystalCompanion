@@ -39,6 +39,7 @@ Open the gear icon (**Attunement**) to configure your oracle.
 | Provider | What it is | What you need |
 |----------|------------|---------------|
 | **OpenRouter Cloud** | Unified cloud API — hundreds of models | OpenRouter API key |
+| **Ollama Cloud** | Hosted models on ollama.com — full live catalog | Ollama Cloud API key ([settings/keys](https://ollama.com/settings/keys)) |
 | **Ollama (Local)** | Models running on your machine | Ollama installed & running |
 | **OpenAI** | GPT / o-series models | OpenAI API key |
 | **Anthropic** | Claude models | Anthropic API key |
@@ -47,7 +48,8 @@ Open the gear icon (**Attunement**) to configure your oracle.
 
 - After choosing a provider (and entering a key if needed), click **Refresh**.
 - **OpenRouter** loads the full live model catalog from their API.
-- **Ollama** lists whatever you have pulled locally (`ollama list`).
+- **Ollama Cloud** loads every model currently published on `https://ollama.com/api/tags`.
+- **Ollama (Local)** lists whatever you have pulled locally (`ollama list`).
 - **OpenAI** lists chat-capable models from your account (with sensible fallbacks).
 - **Anthropic** offers the current Claude lineup.
 
@@ -93,11 +95,12 @@ No images — pure shader magic.
 
 | Symptom | Try this |
 |---------|----------|
-| No models in dropdown | Refresh; check key; for Ollama ensure `ollama serve` is running |
+| No models in dropdown | Refresh; check key; for Ollama Local ensure `ollama serve` is running; for Ollama Cloud check network |
 | Chat error | Confirm key/provider/model; check network; read the crystal’s error glow |
 | No music | Press Awaken; enable Awakening song; raise Music slider |
 | Crystal blank | GPU/WebGL issue — update drivers; avoid software-only GL |
-| Ollama fails | Default URL `http://127.0.0.1:11434` — change if your server differs |
+| Ollama Local fails | Default URL `http://127.0.0.1:11434` — change if your server differs |
+| Ollama Cloud 401 | Create a key at [ollama.com/settings/keys](https://ollama.com/settings/keys) and paste it in Attunement |
 
 ---
 

@@ -11,6 +11,7 @@ const DEFAULT_SETTINGS = {
   openrouterKey: '',
   openaiKey: '',
   anthropicKey: '',
+  ollamaKey: '',
   ollamaUrl: 'http://127.0.0.1:11434',
   model: '',
   temperature: 0.85,
@@ -134,6 +135,25 @@ ipcMain.handle('models:list', async (_e, { provider, settings }) => {
         provider: 'ollama'
       }));
     }
+    if (provider === 'ollama-cloud') {
+      const headers = {};
+      if (s.ollamaKey) headers.Authorization = `Bearer ${s.ollamaKey}`;
+      const data = await requestJson('https://ollama.com/api/tags', {
+        headers,
+        timeout: 20000
+      });
+      return (data.models || [])
+        .map((m) => {
+          const id = m.name || m.model;
+          return {
+            id,
+            name: id,
+            provider: 'ollama-cloud'
+          };
+        })
+        .filter((m) => m.id)
+        .sort((a, b) => a.name.localeCompare(b.name));
+    }
     if (provider === 'openrouter') {
       if (!s.openrouterKey) return [];
       const data = await requestJson('https://openrouter.ai/api/v1/models', {
@@ -203,6 +223,24 @@ ipcMain.handle('chat:send', async (_e, { messages, settings }) => {
     const data = await requestJson(`${base}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      timeout: 180000
+    }, {
+      model,
+      stream: false,
+      options: { temperature: temp },
+      messages: [{ role: 'system', content: system }, ...messages]
+    });
+    return { content: data.message?.content || '' };
+  }
+
+  if (provider === 'ollama-cloud') {
+    if (!s.ollamaKey) throw new Error('Add your Ollama Cloud API key in Settings (ollama.com/settings/keys).');
+    const data = await requestJson('https://ollama.com/api/chat', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${s.ollamaKey}`,
+        'Content-Type': 'application/json'
+      },
       timeout: 180000
     }, {
       model,

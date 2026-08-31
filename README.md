@@ -15,7 +15,7 @@ npm start
 
 Press **Awaken** to birth the crystal and the opening song.
 
-Configure your oracle under **Attunement** (OpenRouter, Ollama, OpenAI, or Anthropic).
+Configure your oracle under **Attunement** (OpenRouter, Ollama Cloud, Ollama Local, OpenAI, or Anthropic).
 
 See [USER_GUIDE.md](./USER_GUIDE.md) for the full guide.
 
