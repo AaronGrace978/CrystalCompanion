@@ -4,6 +4,54 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
+function readOsRelease() {
+  try {
+    return fs.readFileSync('/etc/os-release', 'utf8');
+  } catch {
+    return '';
+  }
+}
+
+function isSteamHandheld() {
+  const env = process.env;
+  if (env.SteamDeck === '1' || env.STEAMDECK === '1') return true;
+  if (env.GAMESCOPE_WAYLAND_DISPLAY) return true;
+  return /steamos|steamdeck/i.test(readOsRelease());
+}
+
+function isGamescopeSession() {
+  const env = process.env;
+  return Boolean(
+    env.GAMESCOPE_WAYLAND_DISPLAY ||
+      /gamescope/i.test(env.XDG_CURRENT_DESKTOP || '') ||
+      /gamescope/i.test(env.DESKTOP_SESSION || '')
+  );
+}
+
+/**
+ * Steam Deck OSK + Chromium often commit each tap twice (key event + IME /
+ * text-input-v3). Force the X11 input path on Deck/gamescope and keep GTK3
+ * IM so letters land once.
+ */
+function configureLinuxInput() {
+  if (process.platform !== 'linux') return;
+
+  app.commandLine.appendSwitch('gtk-version', '3');
+  app.commandLine.appendSwitch('disable-features', 'WaylandTextInputV3');
+
+  if (!isSteamHandheld() && !isGamescopeSession()) return;
+
+  app.commandLine.appendSwitch('ozone-platform-hint', 'x11');
+  app.commandLine.appendSwitch('ozone-platform', 'x11');
+  process.env.ELECTRON_OZONE_PLATFORM_HINT = 'x11';
+  process.env.GTK_IM_MODULE = 'simple';
+  process.env.QT_IM_MODULE = 'simple';
+  process.env.SDL_IM_MODULE = 'simple';
+  process.env.XMODIFIERS = '@im=none';
+}
+
+configureLinuxInput();
+
 const SETTINGS_PATH = path.join(app.getPath('userData'), 'crystal-settings.json');
 
 const DEFAULT_SETTINGS = {
@@ -86,15 +134,19 @@ function requestJson(url, options = {}, body = null) {
 let mainWindow;
 
 function createWindow() {
+  const handheld = isSteamHandheld();
+  const gamescope = isGamescopeSession();
+
   mainWindow = new BrowserWindow({
     width: 1280,
-    height: 820,
-    minWidth: 960,
-    minHeight: 640,
+    height: 800,
+    minWidth: handheld ? 640 : 720,
+    minHeight: handheld ? 400 : 520,
     backgroundColor: '#050814',
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
     frame: true,
     show: false,
+    fullscreen: gamescope,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -105,7 +157,10 @@ function createWindow() {
   });
 
   mainWindow.loadFile(path.join(__dirname, '..', 'src', 'index.html'));
-  mainWindow.once('ready-to-show', () => mainWindow.show());
+  mainWindow.once('ready-to-show', () => {
+    if (gamescope && !mainWindow.isFullScreen()) mainWindow.setFullScreen(true);
+    mainWindow.show();
+  });
   mainWindow.setMenuBarVisibility(false);
 }
 

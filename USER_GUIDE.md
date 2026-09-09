@@ -100,6 +100,7 @@ No images — pure shader magic.
 | Chat error | Confirm key/provider/model; check network; read the crystal’s error glow |
 | No music | Press Awaken; enable Awakening song; raise Music slider |
 | Crystal blank | GPU/WebGL issue — update drivers; avoid software-only GL |
+| Steam Deck letters type twice / feel laggy | Update to this build. The Steam keyboard can commit each tap twice; Crystal Companion now drops the duplicate and parks the chat box above the keyboard. Use Steam + X for the on-screen keyboard. |
 | Ollama Local fails | Default URL `http://127.0.0.1:11434` — change if your server differs |
 | Ollama Cloud 401 | Create a key at [ollama.com/settings/keys](https://ollama.com/settings/keys) and paste it in Attunement |
 

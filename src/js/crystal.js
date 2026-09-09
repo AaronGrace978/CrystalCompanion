@@ -420,7 +420,13 @@
     targetMouse[1] = -((e.clientY / window.innerHeight) * 2 - 1);
   });
 
+  let paused = false;
+
   function frame(now) {
+    if (paused) {
+      requestAnimationFrame(frame);
+      return;
+    }
     resize();
     const t = (now - start) / 1000;
 
@@ -499,6 +505,9 @@
     },
     getMood() {
       return { hue, hueB, wild, glowBoost };
+    },
+    setPaused(on) {
+      paused = Boolean(on);
     }
   };
 })();
