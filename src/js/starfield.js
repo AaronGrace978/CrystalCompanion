@@ -31,7 +31,13 @@
     }));
   }
 
+  let paused = false;
+
   function frame(t) {
+    if (paused) {
+      requestAnimationFrame(frame);
+      return;
+    }
     ctx.clearRect(0, 0, w, h);
 
     // deep nebula wash
@@ -69,4 +75,10 @@
   window.addEventListener('resize', resize);
   resize();
   requestAnimationFrame(frame);
+
+  window.CrystalStarfield = {
+    setPaused(on) {
+      paused = Boolean(on);
+    }
+  };
 })();

@@ -1,6 +1,6 @@
 {
   "name": "crystal-companion",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A digital crystal guide — luminous AI companion for healing, protection, and manifestation",
   "main": "electron/main.js",
   "author": "Aaron Grace <AaronGrace978@users.noreply.github.com>",
@@ -8,6 +8,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --enable-logging",
+    "test": "node scripts/test-input-guard.js",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --publish never",
     "dist:win": "electron-builder --win --publish never",

@@ -250,7 +250,9 @@
     } finally {
       busy = false;
       els.send.disabled = false;
-      els.prompt.focus();
+      if (window.CrystalInput?.prefersKeyboardAutofocus()) {
+        els.prompt.focus();
+      }
     }
   }
 
@@ -286,7 +288,10 @@
       els.boot.remove();
       showWelcome();
       setStatus('Ready to guide…');
-      els.prompt.focus();
+      // Autofocus pops the Steam Deck OSK over the welcome text.
+      if (window.CrystalInput?.prefersKeyboardAutofocus()) {
+        els.prompt.focus();
+      }
     }, 1600);
   });
 
@@ -348,15 +353,25 @@
     setStatus('Settings sealed…');
   });
 
+  let lastSendAt = 0;
+  function requestSend() {
+    if (!els.prompt.value.trim()) return;
+    const now = performance.now();
+    if (now - lastSendAt < 400) return;
+    lastSendAt = now;
+    sendPrompt(els.prompt.value);
+  }
+
   els.form.addEventListener('submit', (e) => {
     e.preventDefault();
-    sendPrompt(els.prompt.value);
+    requestSend();
   });
 
   els.prompt.addEventListener('keydown', (e) => {
+    if (window.CrystalInput?.isImeKey(e) || e.repeat) return;
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      sendPrompt(els.prompt.value);
+      requestSend();
     }
   });
 
@@ -364,6 +379,7 @@
 
   // Boot
   async function init() {
+    if (!window.crystal) return;
     settings = await window.crystal.getSettings();
     fillSettingsForm();
     updateHint();
